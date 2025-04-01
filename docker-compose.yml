@@ -1,0 +1,27 @@
+services:
+  web:
+    image: php:7.4-fpm
+    container_name: projet1-web
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - projet1-network
+    depends_on:
+      - nginx
+
+  nginx:
+    image: nginx:latest
+    container_name: projet1-nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./app:/var/www/html
+    ports:
+      - "80:80"
+    networks:
+      - projet1-network
+    depends_on:
+      - web
+
+networks:
+  projet1-network:
+    driver: bridge
